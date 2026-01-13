@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_economia_circular" model="ir.actions.act_window">
+        <field name="name">Economía Circular</field>
+        <field name="res_model">economia.registro</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_economia_root" name="Economía Circular" action="action_economia_circular"/>
+</odoo>
