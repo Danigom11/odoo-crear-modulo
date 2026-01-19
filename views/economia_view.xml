@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="action_economia_circular" model="ir.actions.act_window">
-        <field name="name">Economía Circular</field>
-        <field name="res_model">economia.registro</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="view_registro_tree" model="ir.ui.view">
-        <field name="name">economia.registro.tree</field>
-        <field name="model">economia.registro</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="tipo_id"/>
-                <field name="cantidad"/>
-                <field name="fecha"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="view_economia_tree" model="ir.ui.view">
-        <field name="name">economia.registro.tree.alt</field>
-        <field name="model">economia.registro</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="tipo_id"/>
-                <field name="cantidad"/>
-                <field name="fecha"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="view_registro_form" model="ir.ui.view">
+    <record id="view_economia_registro_form" model="ir.ui.view">
         <field name="name">economia.registro.form</field>
         <field name="model">economia.registro</field>
         <field name="arch" type="xml">
@@ -55,11 +19,13 @@
                             <field name="name"/>
                             <field name="partner_id"/>
                             <field name="tipo_id"/>
+                            <field name="fecha"/>
                         </group>
                         <group>
-                            <field name="fecha"/>
                             <field name="cantidad"/>
                             <field name="state"/>
+                            <field name="impacto_co2" readonly="1" widget="gauge" options="{'max_field': 'impacto_co2', 'style': 'width:200px; height:120px;'}"/>
+                            <field name="impacto_agua" readonly="1" widget="gauge" options="{'max_field': 'impacto_agua', 'style': 'width:200px; height:120px;'}"/>
                         </group>
                     </group>
                     <group>
@@ -71,8 +37,8 @@
         </field>
     </record>
 
-    <record id="view_economia_form" model="ir.ui.view">
-        <field name="name">economia.registro.form.alt</field>
+    <record id="view_registro_form" model="ir.ui.view">
+        <field name="name">economia.registro.form.alt1</field>
         <field name="model">economia.registro</field>
         <field name="arch" type="xml">
             <form>
@@ -90,11 +56,13 @@
                             <field name="name"/>
                             <field name="partner_id"/>
                             <field name="tipo_id"/>
+                            <field name="fecha"/>
                         </group>
                         <group>
-                            <field name="fecha"/>
                             <field name="cantidad"/>
                             <field name="state"/>
+                            <field name="impacto_co2" readonly="1" widget="gauge" options="{'max_field': 'impacto_co2', 'style': 'width:200px; height:120px;'}"/>
+                            <field name="impacto_agua" readonly="1" widget="gauge" options="{'max_field': 'impacto_agua', 'style': 'width:200px; height:120px;'}"/>
                         </group>
                     </group>
                     <group>
@@ -104,6 +72,100 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="view_economia_form" model="ir.ui.view">
+        <field name="name">economia.registro.form.alt2</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <form>
+                <div class="alert alert-info" role="alert" attrs="{'invisible': [('state', '!=', 'confirmed')]}">
+                    <span class="ribbon ribbon-top-right"><span>CERTIFICADO</span></span>
+                </div>
+                <header>
+                    <button name="action_confirm" type="object" string="Validar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_draft" type="object" string="Volver a Borrador" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                    <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="tipo_id"/>
+                            <field name="fecha"/>
+                        </group>
+                        <group>
+                            <field name="cantidad"/>
+                            <field name="state"/>
+                            <field name="impacto_co2" readonly="1" widget="gauge" options="{'max_field': 'impacto_co2', 'style': 'width:200px; height:120px;'}"/>
+                            <field name="impacto_agua" readonly="1" widget="gauge" options="{'max_field': 'impacto_agua', 'style': 'width:200px; height:120px;'}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="descripcion"/>
+                        <field name="notas"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_economia_registro_tree" model="ir.ui.view">
+        <field name="name">economia.registro.tree</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="tipo_id"/>
+                <field name="cantidad"/>
+                <field name="fecha"/>
+                <field name="impacto_co2"/>
+                <field name="impacto_agua"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_registro_tree" model="ir.ui.view">
+        <field name="name">economia.registro.tree.alt1</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="tipo_id"/>
+                <field name="cantidad"/>
+                <field name="fecha"/>
+                <field name="impacto_co2"/>
+                <field name="impacto_agua"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_economia_tree" model="ir.ui.view">
+        <field name="name">economia.registro.tree.alt2</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="tipo_id"/>
+                <field name="cantidad"/>
+                <field name="fecha"/>
+                <field name="impacto_co2"/>
+                <field name="impacto_agua"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_economia_circular" model="ir.actions.act_window">
+        <field name="name">Economía Circular</field>
+        <field name="res_model">economia.registro</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
     <record id="action_registro" model="ir.actions.act_window">
