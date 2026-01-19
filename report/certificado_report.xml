@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Acción del Reporte -->
+    <record id="action_report_certificado_impacto" model="ir.actions.report">
+        <field name="name">Certificado de Impacto Positivo</field>
+        <field name="model">economia.registro</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">economia_circular.report_certificado_document</field>
+        <field name="report_file">economia_circular.report_certificado_document</field>
+        <field name="binding_model_id" ref="model_economia_registro"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Template Principal del Reporte -->
+    <template id="report_certificado_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica', Arial, sans-serif;">
+                        <!-- Header con Logo y Nombre del Cliente -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <img t-if="o.company_id.logo" 
+                                     t-att-src="image_data_uri(o.company_id.logo)" 
+                                     style="max-height: 80px;"
+                                     alt="Logo Empresa"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h4 class="mb-0"><strong t-field="o.partner_id.name"/></h4>
+                                <p class="text-muted mb-0"><span t-field="o.partner_id.email"/></p>
+                            </div>
+                        </div>
+
+                        <!-- Título Principal -->
+                        <div class="text-center mb-5 mt-4">
+                            <h1 class="display-4 fw-bold" 
+                                style="color: #28a745; text-transform: uppercase; letter-spacing: 2px;">
+                                🌱 CERTIFICADO DE SOSTENIBILIDAD 🌱
+                            </h1>
+                            <hr style="width: 50%; margin: 20px auto; border: 2px solid #28a745;"/>
+                        </div>
+
+                        <!-- Texto de Agradecimiento -->
+                        <div class="mb-5 text-center" style="font-size: 18px; line-height: 1.8;">
+                            <p class="lead">
+                                Gracias a la gestión de <strong style="color: #28a745; font-size: 24px;">
+                                <span t-field="o.cantidad"/> kg</strong> de 
+                                <strong style="color: #007bff;"><span t-field="o.tipo_id"/></strong>,
+                                has generado este impacto positivo:
+                            </p>
+                        </div>
+
+                        <!-- Cajas de Impacto -->
+                        <div class="row mb-5">
+                            <!-- Caja Impacto CO2 -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card shadow-lg border-0" 
+                                     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+                                    <div class="card-body text-center p-5">
+                                        <div style="font-size: 60px; margin-bottom: 20px;">
+                                            🌍
+                                        </div>
+                                        <h3 class="card-title fw-bold mb-3">REDUCCIÓN DE CO₂</h3>
+                                        <h1 class="display-3 fw-bold mb-0">
+                                            <span t-field="o.impacto_co2"/>
+                                        </h1>
+                                        <p class="fs-4 mt-2 mb-0">kilogramos</p>
+                                        <p class="mt-3 opacity-75">Equivalente a plantar árboles</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Caja Impacto Agua -->
+                            <div class="col-md-6 mb-3">
+                                <div class="card shadow-lg border-0" 
+                                     style="background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%); color: white; border-radius: 15px;">
+                                    <div class="card-body text-center p-5">
+                                        <div style="font-size: 60px; margin-bottom: 20px;">
+                                            💧
+                                        </div>
+                                        <h3 class="card-title fw-bold mb-3">AGUA AHORRADA</h3>
+                                        <h1 class="display-3 fw-bold mb-0">
+                                            <span t-field="o.impacto_agua"/>
+                                        </h1>
+                                        <p class="fs-4 mt-2 mb-0">litros</p>
+                                        <p class="mt-3 opacity-75">Recurso vital preservado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mensaje Motivacional -->
+                        <div class="alert alert-success text-center shadow-sm" 
+                             style="border-radius: 10px; background-color: #d4edda; border: none; padding: 30px;">
+                            <h4 class="alert-heading mb-3">
+                                <span style="font-size: 30px;">✨</span> 
+                                ¡Gracias por tu compromiso con el planeta! 
+                                <span style="font-size: 30px;">✨</span>
+                            </h4>
+                            <p class="mb-0" style="font-size: 16px;">
+                                Cada acción cuenta. Juntos construimos un futuro más sostenible.
+                            </p>
+                        </div>
+
+                        <!-- Información del Registro -->
+                        <div class="row mt-5">
+                            <div class="col-12">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Referencia:</strong></td>
+                                        <td><span t-field="o.name"/></td>
+                                        <td class="text-end"><strong>Fecha:</strong></td>
+                                        <td class="text-end"><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Pie de Página -->
+                        <div class="text-center mt-5 pt-4" 
+                             style="border-top: 2px solid #28a745;">
+                            <p class="text-muted mb-1">
+                                <strong>Economía Circular - Gestión de Residuos</strong>
+                            </p>
+                            <p class="text-muted small">
+                                Certificado generado el <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y a las %H:%M')"/>
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
