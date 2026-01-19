@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Tree View (Lista) -->
+    <record id="view_economia_tipo_residuo_tree" model="ir.ui.view">
+        <field name="name">economia.tipo_residuo.tree</field>
+        <field name="model">economia.tipo_residuo</field>
+        <field name="arch" type="xml">
+            <tree string="Tipos de Residuos">
+                <field name="name"/>
+                <field name="unidad"/>
+                <field name="co2_por_unidad"/>
+                <field name="agua_ahorrada"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View (Formulario) -->
+    <record id="view_economia_tipo_residuo_form" model="ir.ui.view">
+        <field name="name">economia.tipo_residuo.form</field>
+        <field name="model">economia.tipo_residuo</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Residuo">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="unidad"/>
+                        </group>
+                        <group>
+                            <field name="co2_por_unidad"/>
+                            <field name="agua_ahorrada"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_economia_tipo_residuo" model="ir.actions.act_window">
+        <field name="name">Tipos de Residuos</field>
+        <field name="res_model">economia.tipo_residuo</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un nuevo tipo de residuo
+            </p>
+            <p>
+                Define los diferentes tipos de materiales reciclables y sus características ambientales.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_economia_tipo_residuo"
+              name="Tipos de Residuos"
+              parent="menu_economia_root"
+              action="action_economia_tipo_residuo"
+              sequence="10"/>
+
+</odoo>
