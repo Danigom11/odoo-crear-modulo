@@ -8,6 +8,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/economia_view.xml',
+        'views/tipo_residuo_view.xml',
     ],
     'installable': True,
     'application': True,
