@@ -6,8 +6,37 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Vista formulario -->
-    <record id="view_economia_form" model="ir.ui.view">
+    <record id="view_registro_tree" model="ir.ui.view">
+        <field name="name">economia.registro.tree</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="tipo_id"/>
+                <field name="cantidad"/>
+                <field name="fecha"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_economia_tree" model="ir.ui.view">
+        <field name="name">economia.registro.tree.alt</field>
+        <field name="model">economia.registro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="tipo_id"/>
+                <field name="cantidad"/>
+                <field name="fecha"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_registro_form" model="ir.ui.view">
         <field name="name">economia.registro.form</field>
         <field name="model">economia.registro</field>
         <field name="arch" type="xml">
@@ -24,31 +53,65 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="tipo_id"/>
                         </group>
                         <group>
+                            <field name="fecha"/>
+                            <field name="cantidad"/>
                             <field name="state"/>
                         </group>
                     </group>
                     <group>
                         <field name="descripcion"/>
+                        <field name="notas"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Vista lista -->
-    <record id="view_economia_tree" model="ir.ui.view">
-        <field name="name">economia.registro.tree</field>
+    <record id="view_economia_form" model="ir.ui.view">
+        <field name="name">economia.registro.form.alt</field>
         <field name="model">economia.registro</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="descripcion"/>
-                <field name="state"/>
-            </tree>
+            <form>
+                <div class="alert alert-info" role="alert" attrs="{'invisible': [('state', '!=', 'confirmed')]}">
+                    <span class="ribbon ribbon-top-right"><span>CERTIFICADO</span></span>
+                </div>
+                <header>
+                    <button name="action_confirm" type="object" string="Validar" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_draft" type="object" string="Volver a Borrador" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                    <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="tipo_id"/>
+                        </group>
+                        <group>
+                            <field name="fecha"/>
+                            <field name="cantidad"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="descripcion"/>
+                        <field name="notas"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 
+    <record id="action_registro" model="ir.actions.act_window">
+        <field name="name">Registro de Entregas</field>
+        <field name="res_model">economia.registro</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <menuitem id="menu_economia_root" name="Economía Circular" action="action_economia_circular"/>
+    <menuitem id="menu_registro" name="Registro de Entregas" action="action_registro"/>
 </odoo>

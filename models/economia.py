@@ -1,28 +1,6 @@
 from odoo import models, fields
 
 
-class EconomiaRegistro(models.Model):
-    _name = 'economia.registro'
-    _description = 'Registro de Economía Circular'
-
-    name = fields.Char(string='Referencia', required=True, default='Nuevo')
-    descripcion = fields.Text(string='Detalles del residuo/envase')
-    state = fields.Selection(
-        [('draft', 'Borrador'), ('confirmed', 'Validado')],
-        string='Estado',
-        default='draft',
-        tracking=True,
-    )
-
-    def action_confirm(self):
-        """Cambia el estado a confirmado"""
-        self.write({'state': 'confirmed'})
-
-    def action_draft(self):
-        """Devuelve el estado a borrador"""
-        self.write({'state': 'draft'})
-
-
 class EconomiaTipoResiduo(models.Model):
     _name = 'economia.tipo_residuo'
     _description = 'Tipo de Residuo/Material'
@@ -44,3 +22,30 @@ class EconomiaTipoResiduo(models.Model):
         help='Litros de agua ahorrados',
     )
     image = fields.Binary(string='Imagen del Material', attachment=True)
+
+
+class EconomiaRegistro(models.Model):
+    _name = 'economia.registro'
+    _description = 'Registro de Economía Circular'
+
+    name = fields.Char(string='Referencia', required=True, default='Nuevo')
+    partner_id = fields.Many2one('res.partner', string='Cliente', required=True)
+    tipo_id = fields.Many2one('economia.tipo_residuo', string='Tipo de Residuo', required=True)
+    cantidad = fields.Float(string='Cantidad Entregada')
+    fecha = fields.Date(string='Fecha', default=fields.Date.today)
+    descripcion = fields.Text(string='Detalles del residuo/envase')
+    notas = fields.Text(string='Notas')
+    state = fields.Selection(
+        [('draft', 'Borrador'), ('confirmed', 'Validado')],
+        string='Estado',
+        default='draft',
+        tracking=True,
+    )
+
+    def action_confirm(self):
+        """Cambia el estado a confirmado."""
+        self.write({'state': 'confirmed'})
+
+    def action_draft(self):
+        """Devuelve el estado a borrador."""
+        self.write({'state': 'draft'})
