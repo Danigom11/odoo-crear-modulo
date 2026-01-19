@@ -8,6 +8,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/economia_view.xml',
+        'report/certificado_report.xml',
     ],
     'installable': True,
     'application': True,
