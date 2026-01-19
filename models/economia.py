@@ -29,11 +29,11 @@ class EconomiaRegistro(models.Model):
     _description = 'Registro de Economía Circular'
 
     name = fields.Char(string='Referencia', required=True, default='Nuevo')
+    descripcion = fields.Text(string='Detalles del residuo/envase')
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True)
     tipo_id = fields.Many2one('economia.tipo_residuo', string='Tipo de Residuo', required=True)
     cantidad = fields.Float(string='Cantidad Entregada', required=True, default=0.0)
     fecha = fields.Date(string='Fecha', default=fields.Date.today)
-    descripcion = fields.Text(string='Detalles del residuo/envase')
     notas = fields.Text(string='Notas')
     impacto_co2 = fields.Float(
         string='Impacto CO2 (kg)',
@@ -56,13 +56,32 @@ class EconomiaRegistro(models.Model):
 
     @api.depends('cantidad', 'tipo_id.co2_por_unidad', 'tipo_id.agua_ahorrada')
     def _compute_impactos(self):
+        factor_co2_defaults = {
+            'vidrio': 0.5,
+            'plastico': 2.0,
+            'metal': 1.5,
+            'carton': 0.8,
+            'organico': 0.3,
+        }
+        factor_agua_defaults = {
+            'vidrio': 10.0,
+            'plastico': 50.0,
+            'metal': 30.0,
+            'carton': 20.0,
+            'organico': 5.0,
+        }
+
         for record in self:
             if record.tipo_id:
-                record.impacto_co2 = record.cantidad * record.tipo_id.co2_por_unidad
-                record.impacto_agua = record.cantidad * record.tipo_id.agua_ahorrada
+                tipo_key = (record.tipo_id.name or '').strip().lower()
+                co2_factor = record.tipo_id.co2_por_unidad or factor_co2_defaults.get(tipo_key, 0.0)
+                agua_factor = record.tipo_id.agua_ahorrada or factor_agua_defaults.get(tipo_key, 0.0)
             else:
-                record.impacto_co2 = 0.0
-                record.impacto_agua = 0.0
+                co2_factor = 0.0
+                agua_factor = 0.0
+
+            record.impacto_co2 = record.cantidad * co2_factor
+            record.impacto_agua = record.cantidad * agua_factor
 
     def action_confirm(self):
         """Cambia el estado a confirmado."""

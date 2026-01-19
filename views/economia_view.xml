@@ -115,14 +115,14 @@
         <field name="name">economia.registro.tree</field>
         <field name="model">economia.registro</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="Registros de Economía Circular">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="tipo_id"/>
                 <field name="cantidad"/>
                 <field name="fecha"/>
-                <field name="impacto_co2"/>
-                <field name="impacto_agua"/>
+                <field name="impacto_co2" string="CO₂ Reducido (kg)"/>
+                <field name="impacto_agua" string="Agua Ahorrada (L)"/>
                 <field name="state"/>
             </tree>
         </field>
