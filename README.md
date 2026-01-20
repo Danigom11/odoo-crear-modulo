@@ -342,6 +342,11 @@ Muestra tabla resumen con columnas:
 
 Permite ordenar, filtrar y buscar rápidamente todos los registros.
 
+Capturas del módulo real en funcionamiento:
+<img width="1914" height="315" alt="image" src="https://github.com/user-attachments/assets/7cb2ec33-32f9-46b7-b1f6-12cc369f6818" />
+
+
+
 ### Menús
 
 Estructura de navegación:
